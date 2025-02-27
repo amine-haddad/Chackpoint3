@@ -2,45 +2,129 @@
 
 {% block stylesheets %}
     <link rel="stylesheet" href="{{ asset('assets/css/map.css') }}">
-{% endblock %}
+    {% endblock %}
 
-{% block body %}
-    <div class="container-fluid">
-        <h1>Map</h1>
-        <div class="row">
-            <div class="col-md-10">
-                <div class="map">
-                    {% if map is empty %}
-                        <div class="alert alert-warning">You are still on the firm ground, you have to load fixtures first !</div>
-                    {% endif %}
-                    {% for y in 0..6 %}
-                        <div class="row">
-                            {% for x in 0..12 %}
-                                {% if map[x][y] is defined %}
-                                    <div class="tile col-1 {{ map[x][y].type }}">
-                                        <div class="tile-name">{{ map[x][y].name ?? ' '}}</div>
-                                        <div class="tile-name coords">{{ map[x][y].coordX }},{{ map[x][y].coordY }}</div>
-                                        {% if boat.coordX == x and boat.coordY == y %}
-                                            <img class="boat img-fluid" src="{{ asset('assets/images/boat.png') }}"
-                                                 alt="boat"/>
-                                        {% endif %}
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
+    {% block body %}
+        <div class="container-fluid">
+            <h1>
+                Map
+            </h1>
+            <div class="row">
+                <div class="col-md-10">
+                    <div class="map">
+                        {% if map is empty %}
+                            <div class="alert alert-warning">
+                                You are still on the firm ground, you have to load fixtures first !
+                            </div>
+                        {% endif %}
+                        {% for y in 0..6 %}
+                            <div class="row">
+                                {% for x in 0..12 %}
+                                    {% if map[x][y] is defined %}
+                                        <div class="tile col-1 {{ map[x][y].type }}">
+                                            <div class="tile-name">
+                                                {{ map[x][y].name ?? ' ' }}
+                                            </div>
+                                            <div class="tile-name coords">
+                                                {{ map[x][y].coordX }}
+                                                ,
+                                                {{ map[x][y].coordY }}
+                                            </div>
+                                            {% if boat.coordX == x and boat.coordY == y %}
+                                                <img class="boat img-fluid" src="{{ asset('assets/images/boat.png') }}" alt="boat" />
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="infos">
+                        <h2>
+                            Information
+                        </h2>
+                        {# Add here informations about current ship position #}
+                        <h2>
+                            Position:
+                        </h2>
+                        <div>
+                            <p>
+                                Longitude "
+                                <span style="color:chartreuse">
+                                    X-
+                                    {{ boat.coordX }}
+                                </span>
+                                "
+                            </p>
+                            <p></p>
                         </div>
-                    {% endfor %}
-                </div>
-            </div>
-            <div class="col-md-2">
-                <div class="infos">
-                    <h2>Information</h2>
-                    {# Add here informations about current ship position #}
-                </div>
-                <div class="navigation">
-                    <h2>Navigation</h2>
+                        <div>
+                            <p>
+                                Latitude: "
+                                <span style="color: chartreuse;">
+                                    Y-
+                                    {{ boat.coordY }}
+                                </span>
+                                "
+                            </p>
+                            {% if boatTile %}
+                                <h3>
+                                    Current Tile:
+                                </h3>
+                                <p>
+                                    Name:
+                                    {{ boat.name }}
+                                </p>
+                                <p>
+                                    Type:
+                                    {{ boatTileType }}
+                                </p>
+                                {% else %}
+                                <p class="alert alert-warning">
+                                    Le bateau est hors de la carte !
+                                </p>
+                            {% endif %}
+                        </div>
+
+                    </div>
                     {# Add here N/S/E/W buttons #}
+                    <div class="navigation">
+                        <h2>
+                            Navigation
+                        </h2>
+                        <div class="squareNav">
+                            <div id="directNavNord" class="blockDirectionNav">
+                                <a href="{{ path('moveDirection', { direction: 'N' }) }}">
+                                    <button>
+                                        ⬆️
+                                    </button>
+                                </a>
+                            </div>
+                            <div id="directNavWestEast" class="blockDirectionNav">
+                                <a href="{{ path('moveDirection', { direction: 'W' }) }}">
+                                    <button>
+                                        ⬅️
+                                    </button>
+                                </a>
+                                <a href="{{ path('moveDirection', { direction: 'E' }) }}">
+                                    <button>
+                                        ➡️
+                                    </button>
+                                </a>
+                            </div>
+                            <div id="directNavSouth" class="blockDirectionNav">
+                                <a href="{{ path('moveDirection', { direction: 'S' }) }}">
+                                    <button>
+                                        ⬇️
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-{% endblock %}
+    {% endblock %}
+    

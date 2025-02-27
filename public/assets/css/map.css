@@ -66,7 +66,7 @@
 @keyframes myBoat {
     0% {
         transform: rotate(-5deg);
-        translate(0 px, 0 px);
+        translate:(0 px, 0 px);
     }
     50% {
         transform: translate(5px, 5px);
